@@ -6,11 +6,13 @@
 //  Copyright (c) 2013年 Mctu. All rights reserved.
 //
 #define kPhotoNum 50
-#define kmNumber 5
+#define kmNumber 6
 #define kCellWith 150
 #define kCellHeith  100
 #define kGapWith 20
 #define kGapHeight 10
+#define kGapTop  5
+#define kGapLeft 10
 //#define knNumber 
 #import "BIDViewController.h"
 //
@@ -32,17 +34,43 @@
 //    [self initPhotos];
     [self initPhotosView];
     
+    UIScrollView * sc = [[UIScrollView alloc]init];
+    sc.bounces = YES;
+    sc.delegate = self;
+    sc.showsHorizontalScrollIndicator = YES;
+    sc.showsVerticalScrollIndicator = YES;
+//    sc.contentSize = CGSizeMake(1024, <#CGFloat height#>)
+    
+    
     [self.view addSubview:self.photesView];
 }
 -(void) initPhotosView
 {
-    self.photesView = [[[BIDPhotosView alloc]initWithFrame:[[UIScreen mainScreen] bounds]]autorelease];
+    self.photesView = [[[BIDPhotosView alloc]initWithFrame:CGRectMake(0, 0, 1024, 768)]autorelease];
+    [self addGesture:self.photesView];
     
-    [self addPhotos];
+    UIScrollView * sc = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 1024, 768)];
+    sc.bounces = YES;
+    sc.delegate = self;
+    sc.showsHorizontalScrollIndicator = YES;
+    sc.showsVerticalScrollIndicator = YES;
+    sc.backgroundColor = [UIColor greenColor];
+    self.scrollView = sc;
+    [sc release];
+    [self addPhotos:self.scrollView];
+    
+    [self.photesView addSubview:self.scrollView];
 }
 
--(void) addPhotos
+-(BIDCellImageView *) cellwithImageName:(NSString *) imageName
 {
+    BIDCellImageView *cellImageView = [[[BIDCellImageView alloc]initWithImage:[UIImage imageNamed:imageName]]autorelease];
+    return cellImageView;
+}
+
+-(void) addPhotos:(UIScrollView *)parantView
+{
+    NSLog(@"parantView:%@",parantView);
     NSMutableArray *mutarr = [[NSMutableArray alloc]initWithObjects:@"image001.jpg", nil];
     NSInteger i;
     for (i = 2; i < kPhotoNum; i++)
@@ -59,20 +87,21 @@
     for (i = 0; i < [self.arrPhotos count]; i++)
     {
         NSString *imageName = [self.arrPhotos objectAtIndex:i];
-        BIDCellImageView *cellImageView = [[BIDCellImageView alloc]initWithImage:[UIImage imageNamed:imageName]];
+        BIDCellImageView *cellImageView = [self cellwithImageName:imageName];
+        cellPoint.x = i%kmNumber *(kCellWith + kGapWith) + kGapLeft;
+        cellPoint.y = i/kmNumber *(kCellHeith + kGapHeight) +kGapTop;
         
-        cellPoint.x = i%kmNumber *(kCellWith + kGapWith);
-        cellPoint.y = i/kmNumber *(kCellHeith + kGapHeight);
-        cellImageView.frame = CGRectMake(cellPoint.x, cellPoint.y, cellSize.width, cellSize.height);
+         cellImageView.frame = CGRectMake(cellPoint.x, cellPoint.y, cellSize.width, cellSize.height);
         cellImageView.userInteractionEnabled = YES;
         [self addGesture:cellImageView];
         
-        [self.photesView addSubview:cellImageView];
-        [cellImageView release];        
+        [parantView addSubview:cellImageView];
+//        [cellImageView release];        
     }
+    parantView.contentSize = CGSizeMake(kmNumber * (kCellWith + kGapWith), (kCellHeith + kGapHeight)* (i/kmNumber) + 1);
 }
 
--(void) addGesture:(UIImageView *)imageView
+-(void) addGesture:(UIView *)inView
 {
     self.pinchGesture = [[[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchGestureAction:)]autorelease];
     self.pinchGesture.delegate = self;
@@ -88,10 +117,10 @@
     self.tapGetesture.numberOfTapsRequired = 2;
     self.tapGetesture.numberOfTouchesRequired = 1;
 
-    [imageView addGestureRecognizer:self.pinchGesture];
-    [imageView addGestureRecognizer:self.panGesture];
-    [imageView addGestureRecognizer:self.rotationGesture];
-    [imageView addGestureRecognizer:self.tapGetesture];
+    [inView addGestureRecognizer:self.pinchGesture];
+    [inView addGestureRecognizer:self.panGesture];
+    [inView addGestureRecognizer:self.rotationGesture];
+    [inView addGestureRecognizer:self.tapGetesture];
 }
 -(void) initPhotos
 {
@@ -121,6 +150,8 @@
     
     
 }
+
+//- (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath; 
 -(void)pinchGestureAction:(UIPinchGestureRecognizer *) gesture
 {
     NSLog(@"pich");

@@ -10,7 +10,7 @@
 #import "BIDPhotosView.h"
 #import "BIDCellImageView.h"
 
-@interface BIDViewController : UIViewController<UIGestureRecognizerDelegate>
+@interface BIDViewController : UIViewController<UIGestureRecognizerDelegate,UIScrollViewDelegate >
 @property(nonatomic,retain) NSArray *arrPhotos;
 @property(nonatomic,retain) BIDPhotosView *photesView;
 @property(nonatomic,retain) BIDCellImageView  *cellImageView;
