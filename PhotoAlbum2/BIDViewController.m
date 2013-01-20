@@ -11,10 +11,11 @@
 #define kCellHeith  100
 #define kGapWith 20
 #define kGapHeight 10
-#define kGapTop  5
+#define kGapTop  10
 #define kGapLeft 10
 //#define knNumber 
 #import "BIDViewController.h"
+#import <QuartzCore/QuartzCore.h>
 //
 @interface BIDViewController ()
 @property(nonatomic,retain) UIImageView *monkeyImageView;
@@ -37,7 +38,7 @@
     UIScrollView * sc = [[UIScrollView alloc]init];
     sc.bounces = YES;
     sc.delegate = self;
-    sc.showsHorizontalScrollIndicator = YES;
+    sc.showsHorizontalScrollIndicator = NO;
     sc.showsVerticalScrollIndicator = YES;
 //    sc.contentSize = CGSizeMake(1024, <#CGFloat height#>)
     
@@ -52,7 +53,7 @@
     UIScrollView * sc = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 1024, 768)];
     sc.bounces = YES;
     sc.delegate = self;
-    sc.showsHorizontalScrollIndicator = YES;
+    sc.showsHorizontalScrollIndicator = NO;
     sc.showsVerticalScrollIndicator = YES;
     sc.backgroundColor = [UIColor greenColor];
     self.scrollView = sc;
@@ -95,6 +96,10 @@
         cellImageView.userInteractionEnabled = YES;
         [self addGesture:cellImageView];
         
+        /*加图片边框*/
+        cellImageView.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
+        cellImageView.layer.borderWidth = 5.0;
+        
         [parantView addSubview:cellImageView];
 //        [cellImageView release];        
     }
@@ -118,10 +123,11 @@
     self.tapGetesture.numberOfTouchesRequired = 1;
 
     [inView addGestureRecognizer:self.pinchGesture];
-    [inView addGestureRecognizer:self.panGesture];
+    //[inView addGestureRecognizer:self.panGesture];
     [inView addGestureRecognizer:self.rotationGesture];
-    [inView addGestureRecognizer:self.tapGetesture];
+    //[inView addGestureRecognizer:self.tapGetesture];
 }
+
 -(void) initPhotos
 {
     self.monkeyImageView = [[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"monkey.png"]]autorelease];
