@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "BIDPhotosView.h"
 #import "BIDCellImageView.h"
+#import "BIDShowsViewController.h"
+
 
 @interface BIDViewController : UIViewController<UIGestureRecognizerDelegate,UIScrollViewDelegate >
 @property(nonatomic,retain) NSArray *arrPhotos;

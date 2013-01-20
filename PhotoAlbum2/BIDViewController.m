@@ -16,6 +16,8 @@
 //#define knNumber 
 #import "BIDViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "BIDShowsViewController.h"
+#import "BIDPublicMethod.h"
 //
 @interface BIDViewController ()
 @property(nonatomic,retain) UIImageView *monkeyImageView;
@@ -23,10 +25,49 @@
 @property(nonatomic,retain) UIPanGestureRecognizer * panGesture;
 @property(nonatomic,retain) UIRotationGestureRecognizer *rotationGesture;
 @property(nonatomic,retain) UITapGestureRecognizer *tapGetesture;
+@property(nonatomic,retain) BIDShowsViewController *showScrollView;
 
 @end
 
 @implementation BIDViewController
+
+- (void)dealloc
+{
+    if(_monkeyImageView)
+    {
+        [_monkeyImageView release];
+        _monkeyImageView = nil;
+    }
+    
+    if(_pinchGesture)
+    {
+        [_pinchGesture release];
+        _pinchGesture = nil;
+    }
+    
+    if(_panGesture)
+    {
+        [_panGesture release];
+        _panGesture = nil;
+    }
+    
+    if(_rotationGesture)
+    {
+        [_rotationGesture release];
+        _rotationGesture = nil;
+    }
+    
+    if(_tapGetesture)
+    {
+        [_tapGetesture release];
+        _tapGetesture = nil;
+    }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [super dealloc];
+}
+
 
 - (void)viewDidLoad
 {
@@ -34,6 +75,8 @@
 	// Do any additional setup after loading the view, typically from a nib.
 //    [self initPhotos];
     [self initPhotosView];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(rotate:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     
     UIScrollView * sc = [[UIScrollView alloc]init];
     sc.bounces = YES;
@@ -44,7 +87,28 @@
     
     
     [self.view addSubview:self.photesView];
+    
+    if (!self.showScrollView)
+    {
+        self.showScrollView = [[[BIDShowsViewController alloc]initWithFrame:self.view.frame]autorelease];
+        
+    }
 }
+
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+
+
+}
+
+- (void)rotate:(NSNotification *)notification
+{
+    NSLog(@"The view's frame is %@",NSStringFromCGRect(self.view.frame));
+    NSLog(@"The userInfo is %@",notification.userInfo);
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"OrientationChange" object:nil];
+}
+
 -(void) initPhotosView
 {
     self.photesView = [[[BIDPhotosView alloc]initWithFrame:CGRectMake(0, 0, 1024, 768)]autorelease];
@@ -125,7 +189,7 @@
     [inView addGestureRecognizer:self.pinchGesture];
     //[inView addGestureRecognizer:self.panGesture];
     [inView addGestureRecognizer:self.rotationGesture];
-    //[inView addGestureRecognizer:self.tapGetesture];
+    [inView addGestureRecognizer:self.tapGetesture];
 }
 
 -(void) initPhotos
@@ -168,7 +232,7 @@
 -(void)panGestureAction:(UIPanGestureRecognizer *) gesture
 {
     NSLog(@"panch");
-    CGPoint oldPoint = CGPointMake(gesture.view.center.x, gesture.view.center.y);
+//    CGPoint oldPoint = CGPointMake(gesture.view.center.x, gesture.view.center.y);
     CGPoint point = [gesture translationInView:self.view];
     gesture.view.center = CGPointMake(gesture.view.center.x + point.x, gesture.view.center.y + point.y);
     [gesture setTranslation:CGPointMake(0, 0) inView:self.view];
@@ -186,45 +250,17 @@
 
 -(void)tapGetestureAction:(UITapGestureRecognizer *) gesture
 {
-    gesture.view.transform = CGAffineTransformScale(gesture.view.transform, 2, 2);
+    //gesture.view.transform = CGAffineTransformScale(gesture.view.transform, 2, 2);
+    NSLog(@"tapGetestureAction");
+    [self.showScrollView.view setFrame:self.view.frame];
+    
+    [self.view addSubview:self.showScrollView.view];
+    
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return  YES;
-}
-- (void)dealloc
-{
-    if(_monkeyImageView)
-    {
-        [_monkeyImageView release];
-        _monkeyImageView = nil;
-    }
-    
-    if(_pinchGesture)
-    {
-        [_pinchGesture release];
-        _pinchGesture = nil;
-    }
-    
-    if(_panGesture)
-    {
-        [_panGesture release];
-        _panGesture = nil;
-    }
-    
-    if(_rotationGesture)
-    {
-        [_rotationGesture release];
-        _rotationGesture = nil;
-    }
-    
-    if(_tapGetesture)
-    {
-        [_tapGetesture release];
-        _tapGetesture = nil;
-    }
-    [super dealloc];
 }
 
 

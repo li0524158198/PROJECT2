@@ -83,6 +83,9 @@
 		0A667ECC16A2A57400D32065 /* BIDCellImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A667ECB16A2A57400D32065 /* BIDCellImageView.m */; };
 		0A667ECE16A2C45500D32065 /* other in Resources */ = {isa = PBXBuildFile; fileRef = 0A667ECD16A2C45500D32065 /* other */; };
 		0AE197DD16AB86F9001FEE7F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE197DC16AB86F9001FEE7F /* QuartzCore.framework */; };
+		0AE197EE16ABB7B2001FEE7F /* BIDShowsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE197ED16ABB7B2001FEE7F /* BIDShowsViewController.m */; };
+		0AE197F016ABBBDF001FEE7F /* imageData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0AE197EF16ABBBDF001FEE7F /* imageData.plist */; };
+		0AE197FF16ABF2F7001FEE7F /* BIDPublicMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE197FE16ABF2F7001FEE7F /* BIDPublicMethod.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -169,6 +172,11 @@
 		0A667ECB16A2A57400D32065 /* BIDCellImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BIDCellImageView.m; path = ../BIDCellImageView.m; sourceTree = "<group>"; };
 		0A667ECD16A2C45500D32065 /* other */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = other; sourceTree = "<group>"; };
 		0AE197DC16AB86F9001FEE7F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		0AE197EC16ABB7B2001FEE7F /* BIDShowsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BIDShowsViewController.h; path = ../BIDShowsViewController.h; sourceTree = "<group>"; };
+		0AE197ED16ABB7B2001FEE7F /* BIDShowsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BIDShowsViewController.m; path = ../BIDShowsViewController.m; sourceTree = "<group>"; };
+		0AE197EF16ABBBDF001FEE7F /* imageData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = imageData.plist; path = ../imageData.plist; sourceTree = "<group>"; };
+		0AE197FD16ABF2F6001FEE7F /* BIDPublicMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BIDPublicMethod.h; sourceTree = "<group>"; };
+		0AE197FE16ABF2F7001FEE7F /* BIDPublicMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BIDPublicMethod.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,7 +197,8 @@
 		0A667E1316A29CDF00D32065 = {
 			isa = PBXGroup;
 			children = (
-				0AE197DC16AB86F9001FEE7F /* QuartzCore.framework */,
+				0AE197FD16ABF2F6001FEE7F /* BIDPublicMethod.h */,
+				0AE197FE16ABF2F7001FEE7F /* BIDPublicMethod.m */,
 				0A667ECD16A2C45500D32065 /* other */,
 				0A667EC216A2A49800D32065 /* monkey.png */,
 				0A667E4916A2A46300D32065 /* images */,
@@ -210,6 +219,7 @@
 		0A667E2116A29CDF00D32065 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0AE197DC16AB86F9001FEE7F /* QuartzCore.framework */,
 				0A667E2216A29CDF00D32065 /* UIKit.framework */,
 				0A667E2416A29CDF00D32065 /* Foundation.framework */,
 				0A667E2616A29CDF00D32065 /* CoreGraphics.framework */,
@@ -229,6 +239,8 @@
 				0A667EC516A2A50400D32065 /* BIDPhotosView.m */,
 				0A667ECA16A2A57400D32065 /* BIDCellImageView.h */,
 				0A667ECB16A2A57400D32065 /* BIDCellImageView.m */,
+				0AE197EC16ABB7B2001FEE7F /* BIDShowsViewController.h */,
+				0AE197ED16ABB7B2001FEE7F /* BIDShowsViewController.m */,
 				0A667E2916A29CDF00D32065 /* Supporting Files */,
 			);
 			path = PhotoAlbum2;
@@ -237,6 +249,7 @@
 		0A667E2916A29CDF00D32065 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0AE197EF16ABBBDF001FEE7F /* imageData.plist */,
 				0A667E2A16A29CDF00D32065 /* PhotoAlbum2-Info.plist */,
 				0A667E2B16A29CDF00D32065 /* InfoPlist.strings */,
 				0A667E2E16A29CDF00D32065 /* main.m */,
@@ -434,6 +447,7 @@
 				0A667EC116A2A47000D32065 /* monkey.png in Resources */,
 				0A667EC316A2A49800D32065 /* monkey.png in Resources */,
 				0A667ECE16A2C45500D32065 /* other in Resources */,
+				0AE197F016ABBBDF001FEE7F /* imageData.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,6 +463,8 @@
 				0A667E3C16A29CDF00D32065 /* BIDViewController.m in Sources */,
 				0A667EC616A2A50400D32065 /* BIDPhotosView.m in Sources */,
 				0A667ECC16A2A57400D32065 /* BIDCellImageView.m in Sources */,
+				0AE197EE16ABB7B2001FEE7F /* BIDShowsViewController.m in Sources */,
+				0AE197FF16ABF2F7001FEE7F /* BIDPublicMethod.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
