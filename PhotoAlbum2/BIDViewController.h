@@ -14,6 +14,7 @@
 
 @interface BIDViewController : UIViewController<UIGestureRecognizerDelegate,UIScrollViewDelegate >
 @property(nonatomic,retain) NSArray *arrPhotos;
+@property(nonatomic,retain) NSArray *arrCellViews;
 @property(nonatomic,retain) BIDPhotosView *photesView;
 @property(nonatomic,retain) BIDCellImageView  *cellImageView;
 @property(nonatomic,retain) UIScrollView * scrollView;

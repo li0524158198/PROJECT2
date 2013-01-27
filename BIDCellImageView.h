@@ -9,5 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface BIDCellImageView : UIImageView
+{
+    CGPoint _point;
+    CGPoint _center;
+    NSInteger _index;
+}
 @property(nonatomic,retain) UIImage *image;
+@property CGPoint point;
+@property CGPoint center;
+@property NSInteger index;
 @end
