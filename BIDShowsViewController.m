@@ -10,6 +10,12 @@
 #import "BIDShowsViewController.h"
 
 @interface BIDShowsViewController ()
+
+@property(nonatomic,retain) UIPinchGestureRecognizer * pinchGesture;
+@property(nonatomic,retain) UIPanGestureRecognizer * panGesture;
+@property(nonatomic,retain) UIRotationGestureRecognizer *rotationGesture;
+@property(nonatomic,retain) UITapGestureRecognizer *tapGetesture;
+
 @property(nonatomic,retain)UIScrollView *showScrollView;
 @property(nonatomic,retain)NSMutableSet *recycledPages;
 @property(nonatomic,retain)NSMutableSet *visiblePages;
@@ -21,6 +27,30 @@
 @synthesize visiblePages = _visiblePages;
 - (void) dealloc
 {
+    if(_pinchGesture)
+    {
+        [_pinchGesture release];
+        _pinchGesture = nil;
+    }
+    
+    if(_panGesture)
+    {
+        [_panGesture release];
+        _panGesture = nil;
+    }
+    
+    if(_rotationGesture)
+    {
+        [_rotationGesture release];
+        _rotationGesture = nil;
+    }
+    
+    if(_tapGetesture)
+    {
+        [_tapGetesture release];
+        _tapGetesture = nil;
+    }
+    
     if(_showScrollView)
     {
         [_showScrollView release];
@@ -54,18 +84,21 @@
         self.showScrollView.delegate = self;
         [self.view addSubview:self.showScrollView];
         
-//        [self noUseReuse];
+        [self addGesture:self.showScrollView withViewController:self];
+        
+        
+        //        [self noUseReuse];
         [self userReuse];
     }
     return self;
-
+    
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     NSLog(@"The content of recycledPages is %@",self.recycledPages);
     NSLog(@"The content of visiblePages is %@",self.visiblePages);
-
+    
     [self titlePages];
 }
 
@@ -99,9 +132,9 @@
             [imageView removeFromSuperview];
         }
     }
-
+    
     [self.visiblePages minusSet:self.recycledPages];
-     //***************添加未显示页面*****************//
+    //***************添加未显示页面*****************//
     for ( NSInteger index = firstNeededPageIndex; index <= lastNeededPageIndex; index++)
     {
         if (![self isDisplayingPageForIndex:index])
@@ -265,6 +298,70 @@
         self.showScrollView.frame = self.view.bounds;
     }
 }
+
+- (void) addGesture:(UIView *)inView withViewController:(id) pViewController
+{
+    self.pinchGesture = [[[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchGestureAction:)]autorelease];
+    self.pinchGesture.delegate = pViewController;
+    
+    self.panGesture = [[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panGestureAction:)] autorelease];
+    self.panGesture.delegate = pViewController;
+    
+    self.rotationGesture = [[[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotationGestureAction:)] autorelease];
+    self.rotationGesture.delegate = pViewController;
+    
+    self.tapGetesture = [[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapGetestureAction:)] autorelease];
+    self.tapGetesture.delegate = pViewController;
+    self.tapGetesture.numberOfTapsRequired = 2;
+    self.tapGetesture.numberOfTouchesRequired = 1;
+    
+    [inView addGestureRecognizer:self.pinchGesture];
+    //[inView addGestureRecognizer:self.panGesture];
+    [inView addGestureRecognizer:self.rotationGesture];
+    [inView addGestureRecognizer:self.tapGetesture];
+}
+
+//- (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+-(void)pinchGestureAction:(UIPinchGestureRecognizer *) gesture
+{
+    NSLog(@"pich");
+    gesture.view.transform = CGAffineTransformScale(gesture.view.transform,gesture.scale,gesture.scale);
+    gesture.scale = 1;
+}
+
+-(void)panGestureAction:(UIPanGestureRecognizer *) gesture
+{
+    NSLog(@"panch");
+    //    CGPoint oldPoint = CGPointMake(gesture.view.center.x, gesture.view.center.y);
+    CGPoint point = [gesture translationInView:self.view];
+    gesture.view.center = CGPointMake(gesture.view.center.x + point.x, gesture.view.center.y + point.y);
+    [gesture setTranslation:CGPointMake(0, 0) inView:self.view];
+    
+    //    gesture.view.center = oldPoint;
+    
+}
+
+-(void)rotationGestureAction:(UIRotationGestureRecognizer *) gesture
+{
+    NSLog(@"rotation");
+    gesture.view.transform = CGAffineTransformRotate(gesture.view.transform, gesture.rotation);
+    gesture.rotation = 0;
+}
+
+-(void)tapGetestureAction:(UITapGestureRecognizer *) gesture
+{
+    //gesture.view.transform = CGAffineTransformScale(gesture.view.transform, 2, 2);
+    NSLog(@"tapGetestureAction");
+    [self.view removeFromSuperview];
+    self.showScrollView = nil;
+    
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return  YES;
+}
+
 
 - (void)didReceiveMemoryWarning
 {
