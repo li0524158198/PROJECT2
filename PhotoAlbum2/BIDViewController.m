@@ -80,6 +80,11 @@
     [super dealloc];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    NSLog(@"viewDidApper %@", NSStringFromCGRect(self.view.frame));
+}
+
 
 - (void)viewDidLoad
 {
@@ -242,22 +247,22 @@
 - (CGPoint)calcPhotoPosition:(NSInteger) index
 {
     CGPoint point;
-    point.x = index % _gMaxHorNumber *(_gCellWith + _gGapWith) + _gGapWith;
-    point.y = index / _gMaxHorNumber *(_gCellHeight + _gGapHeight) + _gGapHeight;
+    point.x = index % _gMaxHorNumber * (_gCellWith + _gGapWith) + _gGapWith;
+    point.y = index / _gMaxHorNumber * (_gCellHeight + _gGapHeight) + _gGapHeight;
     return  point;
 }
 
 - (CGSize)calcScrowViewContentSize:(NSInteger) index
 {
     CGSize contentSize;
-    contentSize.width = _gMaxHorNumber * (_gCellWith + _gGapWith);
+    contentSize.width = _gMaxHorNumber * (_gCellWith + _gGapWith) + _gGapWith;
     if( index % _gMaxVerNumber == 0)
     {
-        contentSize.height = (_gCellHeight + _gGapHeight)* (index /_gMaxHorNumber) + _gGapHeight;
+        contentSize.height = (_gCellHeight + _gGapHeight)* (index / _gMaxHorNumber) + _gGapHeight;
     }
     else
     {
-        contentSize.height = (_gCellHeight + _gGapHeight)* (index /_gMaxHorNumber + 1) + _gGapHeight;
+        contentSize.height = (_gCellHeight + _gGapHeight)* (index / _gMaxHorNumber + 1) + _gGapHeight;
     }
     return contentSize;
 }
